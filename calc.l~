@@ -1,0 +1,8 @@
+
+
+%%
+
+[0-9]*[13579] {printf(" odd number");}
+[0-9]*[24680] { printf ("even number ");}
+
+%%
