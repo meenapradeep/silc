@@ -1,0 +1,38 @@
+decl
+	int i;
+	int j;
+	int arr[10];
+	int lim;
+	int tmp;
+enddecl
+
+begin
+	i = 1;
+	read(lim);
+	while(i < lim) do
+		read(arr[i]);
+		i = i + 1;
+	endwhile;
+
+	i = 1;
+	while(i < lim) do
+		j = i;
+		while(j < lim) do
+			if(arr[i] > arr[j]) then
+				tmp = arr[i];
+				arr[i] = arr[j];
+				arr[j] = tmp;
+			endif;
+			j = j + 1;
+		endwhile;
+		i = i + 1;
+	endwhile;
+
+
+	i = 1;
+	while(i < lim) do
+		write(arr[i]);
+		i = i + 1;
+	endwhile;
+
+end

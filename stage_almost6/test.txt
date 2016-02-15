@@ -1,0 +1,11 @@
+decl
+int as[10];
+int bee;
+enddecl
+
+begin
+bee = 5;
+[bee];
+write(bee);
+end
+
