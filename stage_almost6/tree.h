@@ -66,7 +66,7 @@ void setNodeValues(struct Tnode* Node, struct Tnode* Ptr1, struct Tnode* Ptr2, s
 		printf("Empty node\n");
 		return;
 	}
-/*
+
 	switch(Node -> TYPE){
 		case INT_TYPE:
 			     switch(Node->NODETYPE){				
@@ -74,7 +74,7 @@ void setNodeValues(struct Tnode* Node, struct Tnode* Ptr1, struct Tnode* Ptr2, s
 						return;
 					case ID_NODETYPE:
 						if(Ptr1 != NULL){
-							if(Ptr1->TYPE != INT_TYPE || Ptr1->NODETYPE != INT_TYPE){
+							if(Ptr1->TYPE != INT_TYPE ){
 								printf("%d %d\t", Ptr1->TYPE , Ptr1->NODETYPE );
 								printf("Incompatible types\n");
 								exit(0);
@@ -127,7 +127,7 @@ void setNodeValues(struct Tnode* Node, struct Tnode* Ptr1, struct Tnode* Ptr2, s
 			    }
 			    break;
 		
-	}*/
+	}
 	Node->Ptr1 = Ptr1;
 	Node->Ptr2 = Ptr2;
 	Node->Ptr3 = Ptr3;

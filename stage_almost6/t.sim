@@ -1,12 +1,11 @@
 decl
 	int i;
+	bool b;
 enddecl
 
 begin
 	i = 2;
-	while(i < 10) do
-		write(i);
-		i = i+1;
-	endwhile;
 	
+	
+	write(6);
 end
