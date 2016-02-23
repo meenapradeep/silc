@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #define INT_TYPE 1
+#define BOOL_TYPE 2
 
 struct Symbol{
 	char *name;
@@ -50,6 +51,20 @@ struct Symbol *LookupSym(char *name){
 	}
 	
 	return NULL;
+}
+
+int getType(char *name){
+	struct Symbol *t;
+	
+	t = LookupSym(name);
+	if(t == NULL){
+		printf("\nUndefined variable %s\n", name);
+		exit(0);
+	}
+	else{
+		return t->TYPE;
+		}
+	return -1;
 }
 
 int getVal(char *name, int pos){

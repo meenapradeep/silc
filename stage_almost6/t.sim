@@ -1,11 +1,19 @@
 decl
-	int i;
+	bool a;
 	bool b;
+	bool c;
+	int d;
+	int e;
 enddecl
 
 begin
-	i = 2;
 	
-	
-	write(6);
+	a = true;
+	b = false;
+	c = a or b;
+	e = 5;
+	d = e;
+	if(c) then
+		write(d);
+	endif;
 end

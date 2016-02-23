@@ -36,10 +36,19 @@
             		    case '=': yylval.ptr = TreeCreate(VOID_TYPE, ASG_NODETYPE, 0 , NULL, NULL, NULL, NULL); return ASG; 			
 					}
 				}
+"and"			{
+					yylval.ptr = TreeCreate(BOOL_TYPE, AND_NODETYPE, 0 , NULL, NULL, NULL, NULL); return AND;
+				}
+"or"			{
+					yylval.ptr = TreeCreate(BOOL_TYPE, OR_NODETYPE, 0 , NULL, NULL, NULL, NULL); return OR;
+				}
+"not"			{
+					yylval.ptr = TreeCreate(BOOL_TYPE, NOT_NODETYPE, 0 , NULL, NULL, NULL, NULL); return NOT;
+				}
  	
 [a-zA-Z][a-zA-Z0-9]*	{	char *id = (char*) malloc(sizeof(yytext));
 							strcpy(id, yytext);
-							yylval.ptr = TreeCreate(INT_TYPE, ID_NODETYPE, 0, id, NULL, NULL, NULL);
+							yylval.ptr = TreeCreate(VOID_TYPE, ID_NODETYPE, 0, id, NULL, NULL, NULL);
 							return ID;
 						}
 "[" | 

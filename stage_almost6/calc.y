@@ -33,6 +33,9 @@ int main(int argc, char* argv[])
 %nonassoc EQ LT GT
 %left PLUS
 %left MUL
+%left OR
+%left AND
+%left NOT
 %%
 Pgm 		: DECLARATION BEG StmtList END 	{Evaluate($3);printf("\n");exit(0);}
 			;
@@ -45,7 +48,7 @@ declar		: INT ID ';' 					{InstallSym($2->NAME, 1, INT_TYPE);}
 			| INT ID '[' expr ']' ';' 		{InstallSym($2->NAME, Evaluate($4), INT_TYPE);}
 			| BOOL ID ';' 					{InstallSym($2->NAME, 1, BOOL_TYPE);}
 			| BOOL ID '[' expr ']' ';' 		{InstallSym($2->NAME, Evaluate($4), BOOL_TYPE);}
-			  
+
 			;
 StmtList 	: Stmt							{$$ = $1;}
 	 		| StmtList Stmt					{$$ = TreeCreate(DUMMY_TYPE, DUMMY_NODETYPE, 0 , NULL, $1, $2, NULL);}
@@ -65,10 +68,15 @@ expr 		: expr PLUS expr 				{setNodeValues($2, $1, $3, NULL); $$=$2;}//$2->Ptr1 
 		    | expr LT expr			     	{setNodeValues($2, $1, $3, NULL); $$=$2;}
      		| expr GT expr     				{setNodeValues($2, $1, $3, NULL); $$=$2;}
      		| expr EQ expr     				{setNodeValues($2, $1, $3, NULL); $$=$2;}
+     		| expr AND expr					{setNodeValues($2, $1, $3, NULL); $$=$2;}
+     		| expr OR expr					{setNodeValues($2, $1, $3, NULL); $$=$2;}
+     		| NOT expr						{setNodeValues($1, $2, NULL, NULL); $$=$1;}
      		| '('expr')' 	{$$ = $2;}
      		| NUM			{$$ = $1;}
 		    | ID  			{$$ = $1;}
 		    | ID'['expr']'	{setNodeValues( $1, $3, NULL,NULL); $$=$1;}
+		    | TRUE			{printf("true");$$ = $1;}
+		    | FALSE			{$$ = $1;}
 		    ;
 %%
 
