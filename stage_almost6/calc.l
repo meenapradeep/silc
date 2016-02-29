@@ -53,7 +53,7 @@
 						}
 "[" | 
 "]" |
-[;()]			return *yytext;
+[;(),]			return *yytext;
 [0-9]+	 		{yylval.ptr = TreeCreate(INT_TYPE, NUM_NODETYPE, atoi(yytext),NULL, NULL, NULL, NULL); return NUM;}
 [ \t\n]	 		{}
 . 			{}

@@ -2,10 +2,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "lex.yy.c"
-#include "stage5tree.h"
+#include "stage5.h"
 
 void yyerror(char *str){
-	fprintf(stderr, "ERROR : %s\n", str);
+	fprintf(stderr, "%dERROR : %s\n",yylineno, str);
 }
 
 int main(int argc, char* argv[])
@@ -33,7 +33,7 @@ int main(int argc, char* argv[])
 %left PLUS
 %left MUL
 %%
-Pgm : StmtList '\n'  							{Evaluate($1);printf(" \n");exit(0);};
+Pgm : StmtList 	'\n'							{printf("START\n");CodeGen($1);printf("HALT\n");exit(0);};
 StmtList : Stmt									{$$ = $1;}
 	 | StmtList Stmt							{$$ = TreeCreate(DUMMY_TYPE, DUMMY_NODETYPE, 0 , NULL, $1, $2, NULL);}
 	 ;

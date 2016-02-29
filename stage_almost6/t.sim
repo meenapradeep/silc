@@ -1,9 +1,8 @@
 decl
-	bool a;
-	bool b;
-	bool c;
-	int d;
-	int e;
+	bool a,b,c;
+	
+	int d,e;
+	
 enddecl
 
 begin

@@ -5,6 +5,8 @@
 #include "symbol.h"
 #include "tree.h"
 
+int var_type;
+
 void yyerror(char *str){
 	fprintf(stderr, "ERROR : %s\n", str);
 }
@@ -44,12 +46,16 @@ DECLARATION	: DECL declist ENDDECL
 declist		: declist declar 
 			| declar
 			;
-declar		: INT ID ';' 					{InstallSym($2->NAME, 1, INT_TYPE);}
-			| INT ID '[' expr ']' ';' 		{InstallSym($2->NAME, Evaluate($4), INT_TYPE);}
-			| BOOL ID ';' 					{InstallSym($2->NAME, 1, BOOL_TYPE);}
-			| BOOL ID '[' expr ']' ';' 		{InstallSym($2->NAME, Evaluate($4), BOOL_TYPE);}
-
+declar		: type idlist ';' 					
 			;
+idlist		: ID ',' idlist 				{InstallSym($1->NAME, 1, var_type);}
+			| ID							{InstallSym($1->NAME, 1, var_type);}
+			| ID '[' expr ']' ',' idlist	{InstallSym($1->NAME, $3->VALUE, var_type);}
+			| ID '[' expr ']'				{InstallSym($1->NAME, $3->VALUE, var_type);}
+			;
+type		: INT {var_type = INT_TYPE;}
+			| BOOL {var_type = BOOL_TYPE;}
+			;		
 StmtList 	: Stmt							{$$ = $1;}
 	 		| StmtList Stmt					{$$ = TreeCreate(DUMMY_TYPE, DUMMY_NODETYPE, 0 , NULL, $1, $2, NULL);}
 	 		;

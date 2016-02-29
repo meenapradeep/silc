@@ -10,9 +10,11 @@ struct Symbol{
 	int TYPE;
 	int SIZE;
 	int *binding;
+	int symindex;
 	struct Symbol *next;
 } *symbol = NULL;
 
+int symindex = 0;
 
 void InstallSym(char *name, int SIZE, int TYPE){
 	struct Symbol *tmp;
@@ -28,6 +30,8 @@ void InstallSym(char *name, int SIZE, int TYPE){
 	tmp -> TYPE = TYPE;
 	data = (int*) malloc(sizeof(int) * SIZE);
 	tmp -> binding = data;
+	tmp -> symindex = symindex;
+	symindex += SIZE;
 	
 	if(symbol == NULL){
 		tmp -> next = NULL;
@@ -51,6 +55,20 @@ struct Symbol *LookupSym(char *name){
 	}
 	
 	return NULL;
+}
+
+int getSymbolIndex(char *name){
+	struct Symbol *t;
+	
+	t = LookupSym(name);
+	if(t == NULL){
+		printf("\nUndefined variable %s\n", name);
+		exit(0);
+	}
+	else{
+		return t->symindex;
+		}
+	return -1;
 }
 
 int getType(char *name){
@@ -94,13 +112,16 @@ void setVal(char *name, int pos, int val){
 		
 }
 
-/*
-int main()
-{
-prinf("lets install ");
-Installsym("as",1,INT_TYPE);
-printd("lets get the value");
-getVal("as");
-printf("done");
-return 0;
-}*/
+int *GetBind(char *name ,int pos)
+{	struct Symbol *t;
+	
+	t = LookupSym(name);
+	if(t == NULL){
+		printf("\nUndefined variable %s\n", name);
+		exit(0);
+	}
+	else{
+		return (t->binding + pos);
+		}
+	return ;
+}

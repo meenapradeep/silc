@@ -108,7 +108,7 @@ extern int yydebug;
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 26 "calc.y" /* yacc.c:1909  */
+#line 28 "calc.y" /* yacc.c:1909  */
 struct Tnode* ptr;
 
 #line 115 "y.tab.h" /* yacc.c:1909  */

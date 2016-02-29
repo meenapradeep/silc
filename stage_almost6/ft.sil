@@ -1,0 +1,8 @@
+decl
+ int a[10],b[5];
+enddecl
+
+begin
+ a[6] = 76;
+ b[2] = 102;
+end
