@@ -57,21 +57,25 @@ extern int yydebug;
     ASG = 267,
     PLUS = 268,
     MUL = 269,
-    TRUE = 270,
-    FALSE = 271,
-    AND = 272,
-    OR = 273,
-    NOT = 274,
-    THEN = 275,
-    ENDIF = 276,
-    DO = 277,
-    ENDWHILE = 278,
-    DECL = 279,
-    ENDDECL = 280,
-    BEG = 281,
-    END = 282,
-    INT = 283,
-    BOOL = 284
+    SUB = 270,
+    DIV = 271,
+    MOD = 272,
+    TRUE = 273,
+    FALSE = 274,
+    AND = 275,
+    OR = 276,
+    NOT = 277,
+    THEN = 278,
+    ELSE = 279,
+    ENDIF = 280,
+    DO = 281,
+    ENDWHILE = 282,
+    DECL = 283,
+    ENDDECL = 284,
+    BEG = 285,
+    END = 286,
+    INT = 287,
+    BOOL = 288
   };
 #endif
 /* Tokens.  */
@@ -87,31 +91,35 @@ extern int yydebug;
 #define ASG 267
 #define PLUS 268
 #define MUL 269
-#define TRUE 270
-#define FALSE 271
-#define AND 272
-#define OR 273
-#define NOT 274
-#define THEN 275
-#define ENDIF 276
-#define DO 277
-#define ENDWHILE 278
-#define DECL 279
-#define ENDDECL 280
-#define BEG 281
-#define END 282
-#define INT 283
-#define BOOL 284
+#define SUB 270
+#define DIV 271
+#define MOD 272
+#define TRUE 273
+#define FALSE 274
+#define AND 275
+#define OR 276
+#define NOT 277
+#define THEN 278
+#define ELSE 279
+#define ENDIF 280
+#define DO 281
+#define ENDWHILE 282
+#define DECL 283
+#define ENDDECL 284
+#define BEG 285
+#define END 286
+#define INT 287
+#define BOOL 288
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE YYSTYPE;
 union YYSTYPE
 {
-#line 28 "calc.y" /* yacc.c:1909  */
+#line 29 "calc.y" /* yacc.c:1909  */
 struct Tnode* ptr;
 
-#line 115 "y.tab.h" /* yacc.c:1909  */
+#line 123 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

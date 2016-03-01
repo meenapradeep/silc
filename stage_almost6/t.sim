@@ -1,18 +1,11 @@
 decl
-	bool a,b,c;
-	
-	int d,e;
-	
+	int a,b[10];
+	bool c,d;
 enddecl
 
 begin
-	
-	a = true;
-	b = false;
-	c = a or b;
-	e = 5;
-	d = e;
-	if(c) then
-		write(d);
-	endif;
+		b[4] = 67;
+
+		write(b[4]);
+
 end
