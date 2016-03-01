@@ -20,7 +20,6 @@ int main(int argc, char* argv[])
 		if(fp)
 			yyin = fp;
 	}
-
 	return yyparse();
 }
 
@@ -43,37 +42,37 @@ int main(int argc, char* argv[])
 %left AND
 %left NOT
 %%
-Pgm 		: DECLARATION BEG StmtList END 	{CodeGen($3);printf("\n");exit(0);}
-			;
+Pgm 		: DECLARATION BEG StmtList END 	{initFile();CodeGen($3);closeFile();printf("Compiled\n");exit(0);}
+				;
 DECLARATION	: DECL declist ENDDECL
-			;
-declist		: declist declar
-			| declar
-			;
-declar		: type idlist ';'
-			;
-idlist		: ID ',' idlist 				{InstallSym($1->NAME, 1, var_type);}
-			| ID							{InstallSym($1->NAME, 1, var_type);}
-			| ID '[' expr ']' ',' idlist	{InstallSym($1->NAME, $3->VALUE, var_type);}
-			| ID '[' expr ']'				{InstallSym($1->NAME, $3->VALUE, var_type);}
-			;
-type		: INT {var_type = INT_TYPE;}
-			| BOOL {var_type = BOOL_TYPE;}
-			;
-StmtList 	: Stmt							{$$ = $1;}
-	 		| StmtList Stmt					{$$ = TreeCreate(DUMMY_TYPE, DUMMY_NODETYPE, 0 , NULL, $1, $2, NULL);}
+				;
+declist	: declist declar
+				| declar
+				;
+declar	: type idlist ';'
+				;
+idlist	: ID ',' idlist 									{InstallSym($1->NAME, 1, var_type);}
+				| ID															{InstallSym($1->NAME, 1, var_type);}
+				| ID '[' expr ']' ',' idlist			{InstallSym($1->NAME, $3->VALUE, var_type);}
+				| ID '[' expr ']'									{InstallSym($1->NAME, $3->VALUE, var_type);}
+				;
+type		: INT 														{var_type = INT_TYPE;}
+				| BOOL 														{var_type = BOOL_TYPE;}
+				;
+StmtList 	: Stmt													{$$ = $1;}
+	 		| StmtList Stmt											{$$ = TreeCreate(DUMMY_TYPE, DUMMY_NODETYPE, 0 , NULL, $1, $2, NULL);}
 	 		;
-Stmt		: ID ASG expr';' 				{setNodeValues($2, $1, $3, NULL); $$ = $2;}
-			| ID '[' expr ']' ASG expr	';'	{setNodeValues($1, $3, NULL, NULL); setNodeValues($5, $1, $6, NULL); $$ = $5;}
-		    | READ'('ID')'';'				{setNodeValues($1, $3, NULL, NULL); $$ = $1;}
-		    | READ'('ID '[' expr ']' ')'';'	{setNodeValues($3, $5, NULL, NULL); setNodeValues($1, $3, NULL, NULL); $$ = $1;}
-		    | WRITE'('expr')'';' 			{setNodeValues($1, $3, NULL, NULL); $$ = $1;}
+Stmt		: ID ASG expr';' 									{setNodeValues($2, $1, $3, NULL); $$ = $2;}
+			| ID '[' expr ']' ASG expr	';'			{setNodeValues($1, $3, NULL, NULL); setNodeValues($5, $1, $6, NULL); $$ = $5;}
+		    | READ'('ID')'';'									{setNodeValues($1, $3, NULL, NULL); $$ = $1;}
+		    | READ'('ID '[' expr ']' ')'';'		{setNodeValues($3, $5, NULL, NULL); setNodeValues($1, $3, NULL, NULL); $$ = $1;}
+		    | WRITE'('expr')'';' 							{setNodeValues($1, $3, NULL, NULL); $$ = $1;}
 		    | IF'('expr')' THEN StmtList ENDIF';'
-		    								{setNodeValues($1, $3, $6, NULL); $$ = $1;}
+		    																	{setNodeValues($1, $3, $6, NULL); $$ = $1;}
 				| IF'('expr')' THEN StmtList ELSE StmtList ENDIF';'
-		    								{setNodeValues($1, $3, $6, $8); $$ = $1;}
+		    																	{setNodeValues($1, $3, $6, $8); $$ = $1;}
 		    | WHILE'('expr')' DO StmtList ENDWHILE';'
-		    								{setNodeValues($1, $3, $6, NULL); $$ = $1;}
+		    																	{setNodeValues($1, $3, $6, NULL); $$ = $1;}
 		    ;
 expr 		: expr PLUS expr 				{setNodeValues($2, $1, $3, NULL); $$=$2;}//$2->Ptr1 = $1; $2->Ptr2 = $3; $$ = $2;}
 		    | expr MUL expr 				{setNodeValues($2, $1, $3, NULL); $$=$2;}

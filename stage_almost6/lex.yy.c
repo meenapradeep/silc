@@ -8,7 +8,7 @@
 #define FLEX_SCANNER
 #define YY_FLEX_MAJOR_VERSION 2
 #define YY_FLEX_MINOR_VERSION 5
-#define YY_FLEX_SUBMINOR_VERSION 39
+#define YY_FLEX_SUBMINOR_VERSION 35
 #if YY_FLEX_SUBMINOR_VERSION > 0
 #define FLEX_BETA
 #endif
@@ -141,7 +141,15 @@ typedef unsigned int flex_uint32_t;
 
 /* Size of default input buffer. */
 #ifndef YY_BUF_SIZE
+#ifdef __ia64__
+/* On IA-64, the buffer size is 16k, not 8k.
+ * Moreover, YY_BUF_SIZE is 2*YY_READ_BUF_SIZE in the general case.
+ * Ditto for the __ia64__ case accordingly.
+ */
+#define YY_BUF_SIZE 32768
+#else
 #define YY_BUF_SIZE 16384
+#endif /* __ia64__ */
 #endif
 
 /* The state buf must be large enough to hold one state per character in the main buffer.
@@ -153,12 +161,7 @@ typedef unsigned int flex_uint32_t;
 typedef struct yy_buffer_state *YY_BUFFER_STATE;
 #endif
 
-#ifndef YY_TYPEDEF_YY_SIZE_T
-#define YY_TYPEDEF_YY_SIZE_T
-typedef size_t yy_size_t;
-#endif
-
-extern yy_size_t yyleng;
+extern int yyleng;
 
 extern FILE *yyin, *yyout;
 
@@ -167,7 +170,6 @@ extern FILE *yyin, *yyout;
 #define EOB_ACT_LAST_MATCH 2
 
     #define YY_LESS_LINENO(n)
-    #define YY_LINENO_REWIND_TO(ptr)
     
 /* Return all but the first "n" matched characters back to the input stream. */
 #define yyless(n) \
@@ -184,6 +186,11 @@ extern FILE *yyin, *yyout;
 	while ( 0 )
 
 #define unput(c) yyunput( c, (yytext_ptr)  )
+
+#ifndef YY_TYPEDEF_YY_SIZE_T
+#define YY_TYPEDEF_YY_SIZE_T
+typedef size_t yy_size_t;
+#endif
 
 #ifndef YY_STRUCT_YY_BUFFER_STATE
 #define YY_STRUCT_YY_BUFFER_STATE
@@ -202,7 +209,7 @@ struct yy_buffer_state
 	/* Number of characters read into yy_ch_buf, not including EOB
 	 * characters.
 	 */
-	yy_size_t yy_n_chars;
+	int yy_n_chars;
 
 	/* Whether we "own" the buffer - i.e., we know we created it,
 	 * and can realloc() it to grow it, and should free() it to
@@ -272,8 +279,8 @@ static YY_BUFFER_STATE * yy_buffer_stack = 0; /**< Stack as an array. */
 
 /* yy_hold_char holds the character lost when yytext is formed. */
 static char yy_hold_char;
-static yy_size_t yy_n_chars;		/* number of characters read into yy_ch_buf */
-yy_size_t yyleng;
+static int yy_n_chars;		/* number of characters read into yy_ch_buf */
+int yyleng;
 
 /* Points to current character in buffer. */
 static char *yy_c_buf_p = (char *) 0;
@@ -301,7 +308,7 @@ static void yy_init_buffer (YY_BUFFER_STATE b,FILE *file  );
 
 YY_BUFFER_STATE yy_scan_buffer (char *base,yy_size_t size  );
 YY_BUFFER_STATE yy_scan_string (yyconst char *yy_str  );
-YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,yy_size_t len  );
+YY_BUFFER_STATE yy_scan_bytes (yyconst char *bytes,int len  );
 
 void *yyalloc (yy_size_t  );
 void *yyrealloc (void *,yy_size_t  );
@@ -333,7 +340,7 @@ void yyfree (void *  );
 
 /* Begin user sect3 */
 
-#define yywrap() 1
+#define yywrap(n) 1
 #define YY_SKIP_YYWRAP
 
 typedef unsigned char YY_CHAR;
@@ -500,13 +507,12 @@ int yy_flex_debug = 0;
 #define YY_RESTORE_YY_MORE_OFFSET
 char *yytext;
 #line 1 "calc.l"
-/*Stage 6*/
-#line 3 "calc.l"
+#line 2 "calc.l"
 #include<stdlib.h>
 #include<stdio.h>
 #include "tree.h"
 #include "y.tab.h"
-#line 510 "lex.yy.c"
+#line 516 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -545,7 +551,7 @@ FILE *yyget_out (void );
 
 void yyset_out  (FILE * out_str  );
 
-yy_size_t yyget_leng (void );
+int yyget_leng (void );
 
 char *yyget_text (void );
 
@@ -587,7 +593,12 @@ static int input (void );
 
 /* Amount of stuff to slurp up with each read. */
 #ifndef YY_READ_BUF_SIZE
+#ifdef __ia64__
+/* On IA-64, the buffer size is 16k, not 8k */
+#define YY_READ_BUF_SIZE 16384
+#else
 #define YY_READ_BUF_SIZE 8192
+#endif /* __ia64__ */
 #endif
 
 /* Copy whatever the last rule matched to the standard output. */
@@ -688,6 +699,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
+#line 10 "calc.l"
+
+#line 705 "lex.yy.c"
+
 	if ( !(yy_init) )
 		{
 		(yy_init) = 1;
@@ -714,11 +729,6 @@ YY_DECL
 		yy_load_buffer_state( );
 		}
 
-	{
-#line 11 "calc.l"
-
-#line 721 "lex.yy.c"
-
 	while ( 1 )		/* loops until end-of-file is reached */
 		{
 		yy_cp = (yy_c_buf_p);
@@ -735,7 +745,7 @@ YY_DECL
 yy_match:
 		do
 			{
-			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)] ;
+			register YY_CHAR yy_c = yy_ec[YY_SC_TO_UI(*yy_cp)];
 			if ( yy_accept[yy_current_state] )
 				{
 				(yy_last_accepting_state) = yy_current_state;
@@ -776,107 +786,107 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 12 "calc.l"
+#line 11 "calc.l"
 {yylval.ptr = TreeCreate(VOID_TYPE, READ_NODETYPE,  0 , NULL, NULL, NULL, NULL); return READ;	}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 13 "calc.l"
+#line 12 "calc.l"
 {yylval.ptr = TreeCreate(VOID_TYPE, WRITE_NODETYPE, 0 , NULL, NULL, NULL, NULL); return WRITE;	}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 14 "calc.l"
+#line 13 "calc.l"
 {yylval.ptr = TreeCreate(VOID_TYPE, IF_NODETYPE,    0 , NULL, NULL, NULL, NULL); return IF;		}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 15 "calc.l"
+#line 14 "calc.l"
 return THEN;
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 16 "calc.l"
+#line 15 "calc.l"
 return ELSE;
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 17 "calc.l"
+#line 16 "calc.l"
 return ENDIF;
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 18 "calc.l"
+#line 17 "calc.l"
 {yylval.ptr = TreeCreate(VOID_TYPE, WHILE_NODETYPE, 0 , NULL, NULL, NULL, NULL); return WHILE;	}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 19 "calc.l"
+#line 18 "calc.l"
 return DO;
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 20 "calc.l"
+#line 19 "calc.l"
 return ENDWHILE;
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 21 "calc.l"
+#line 20 "calc.l"
 return DECL;
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 22 "calc.l"
+#line 21 "calc.l"
 return ENDDECL;
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 23 "calc.l"
+#line 22 "calc.l"
 return BEG;
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 24 "calc.l"
+#line 23 "calc.l"
 return END;
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 25 "calc.l"
+#line 24 "calc.l"
 return INT;
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 26 "calc.l"
+#line 25 "calc.l"
 return BOOL;
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 27 "calc.l"
+#line 26 "calc.l"
 {yylval.ptr = TreeCreate(BOOL_TYPE, TRUE_NODETYPE, 1 , NULL, NULL, NULL, NULL); return TRUE;}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 28 "calc.l"
+#line 27 "calc.l"
 {yylval.ptr = TreeCreate(BOOL_TYPE, FALSE_NODETYPE, 0 , NULL, NULL, NULL, NULL); return FALSE;}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 29 "calc.l"
+#line 28 "calc.l"
 {yylval.ptr = TreeCreate(BOOL_TYPE, EQ_NODETYPE, 0 , NULL, NULL, NULL, NULL); return EQ;}
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 30 "calc.l"
+#line 29 "calc.l"
 {yylval.ptr = TreeCreate(BOOL_TYPE, LT_NODETYPE, 0 , NULL, NULL, NULL, NULL); return LT;}
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 31 "calc.l"
+#line 30 "calc.l"
 {yylval.ptr = TreeCreate(BOOL_TYPE, GT_NODETYPE, 0 , NULL, NULL, NULL, NULL); return GT;}
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 32 "calc.l"
+#line 31 "calc.l"
 {
 					switch(*yytext)
 					{
@@ -892,28 +902,28 @@ YY_RULE_SETUP
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 44 "calc.l"
+#line 43 "calc.l"
 {
 					yylval.ptr = TreeCreate(BOOL_TYPE, AND_NODETYPE, 0 , NULL, NULL, NULL, NULL); return AND;
 				}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 47 "calc.l"
+#line 46 "calc.l"
 {
 					yylval.ptr = TreeCreate(BOOL_TYPE, OR_NODETYPE, 0 , NULL, NULL, NULL, NULL); return OR;
 				}
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 50 "calc.l"
+#line 49 "calc.l"
 {
 					yylval.ptr = TreeCreate(BOOL_TYPE, NOT_NODETYPE, 0 , NULL, NULL, NULL, NULL); return NOT;
 				}
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 54 "calc.l"
+#line 53 "calc.l"
 {	char *id = (char*) malloc(sizeof(yytext));
 							strcpy(id, yytext);
 							yylval.ptr = TreeCreate(VOID_TYPE, ID_NODETYPE, 0, id, NULL, NULL, NULL);
@@ -921,36 +931,36 @@ YY_RULE_SETUP
 						}
 	YY_BREAK
 case 26:
-#line 60 "calc.l"
+#line 59 "calc.l"
 case 27:
-#line 61 "calc.l"
+#line 60 "calc.l"
 case 28:
 YY_RULE_SETUP
-#line 61 "calc.l"
+#line 60 "calc.l"
 return *yytext;
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 62 "calc.l"
+#line 61 "calc.l"
 {yylval.ptr = TreeCreate(INT_TYPE, NUM_NODETYPE, atoi(yytext),NULL, NULL, NULL, NULL); return NUM;}
 	YY_BREAK
 case 30:
 /* rule 30 can match eol */
 YY_RULE_SETUP
-#line 63 "calc.l"
+#line 62 "calc.l"
 {}
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 64 "calc.l"
+#line 63 "calc.l"
 {}
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 65 "calc.l"
+#line 64 "calc.l"
 ECHO;
 	YY_BREAK
-#line 954 "lex.yy.c"
+#line 964 "lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1081,7 +1091,6 @@ case YY_STATE_EOF(INITIAL):
 			"fatal flex scanner internal error--no action found" );
 	} /* end of action switch */
 		} /* end of scanning one token */
-	} /* end of user's declarations */
 } /* end of yylex */
 
 /* yy_get_next_buffer - try to read in a new buffer
@@ -1137,21 +1146,21 @@ static int yy_get_next_buffer (void)
 
 	else
 		{
-			yy_size_t num_to_read =
+			int num_to_read =
 			YY_CURRENT_BUFFER_LVALUE->yy_buf_size - number_to_move - 1;
 
 		while ( num_to_read <= 0 )
 			{ /* Not enough room in the buffer - grow it. */
 
 			/* just a shorter name for the current buffer */
-			YY_BUFFER_STATE b = YY_CURRENT_BUFFER_LVALUE;
+			YY_BUFFER_STATE b = YY_CURRENT_BUFFER;
 
 			int yy_c_buf_p_offset =
 				(int) ((yy_c_buf_p) - b->yy_ch_buf);
 
 			if ( b->yy_is_our_buffer )
 				{
-				yy_size_t new_size = b->yy_buf_size * 2;
+				int new_size = b->yy_buf_size * 2;
 
 				if ( new_size <= 0 )
 					b->yy_buf_size += b->yy_buf_size / 8;
@@ -1182,7 +1191,7 @@ static int yy_get_next_buffer (void)
 
 		/* Read in more data. */
 		YY_INPUT( (&YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[number_to_move]),
-			(yy_n_chars), num_to_read );
+			(yy_n_chars), (size_t) num_to_read );
 
 		YY_CURRENT_BUFFER_LVALUE->yy_n_chars = (yy_n_chars);
 		}
@@ -1277,7 +1286,7 @@ static int yy_get_next_buffer (void)
 	yy_current_state = yy_nxt[yy_base[yy_current_state] + (unsigned int) yy_c];
 	yy_is_jam = (yy_current_state == 86);
 
-		return yy_is_jam ? 0 : yy_current_state;
+	return yy_is_jam ? 0 : yy_current_state;
 }
 
     static void yyunput (int c, register char * yy_bp )
@@ -1292,7 +1301,7 @@ static int yy_get_next_buffer (void)
 	if ( yy_cp < YY_CURRENT_BUFFER_LVALUE->yy_ch_buf + 2 )
 		{ /* need to shift things up to make room */
 		/* +2 for EOB chars. */
-		register yy_size_t number_to_move = (yy_n_chars) + 2;
+		register int number_to_move = (yy_n_chars) + 2;
 		register char *dest = &YY_CURRENT_BUFFER_LVALUE->yy_ch_buf[
 					YY_CURRENT_BUFFER_LVALUE->yy_buf_size + 2];
 		register char *source =
@@ -1341,7 +1350,7 @@ static int yy_get_next_buffer (void)
 
 		else
 			{ /* need more input */
-			yy_size_t offset = (yy_c_buf_p) - (yytext_ptr);
+			int offset = (yy_c_buf_p) - (yytext_ptr);
 			++(yy_c_buf_p);
 
 			switch ( yy_get_next_buffer(  ) )
@@ -1501,6 +1510,10 @@ static void yy_load_buffer_state  (void)
 	yyfree((void *) b  );
 }
 
+#ifndef __cplusplus
+extern int isatty (int );
+#endif /* __cplusplus */
+    
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a yyrestart() or at EOF.
@@ -1613,7 +1626,7 @@ void yypop_buffer_state (void)
  */
 static void yyensure_buffer_stack (void)
 {
-	yy_size_t num_to_alloc;
+	int num_to_alloc;
     
 	if (!(yy_buffer_stack)) {
 
@@ -1710,12 +1723,12 @@ YY_BUFFER_STATE yy_scan_string (yyconst char * yystr )
  * 
  * @return the newly allocated buffer state object.
  */
-YY_BUFFER_STATE yy_scan_bytes  (yyconst char * yybytes, yy_size_t  _yybytes_len )
+YY_BUFFER_STATE yy_scan_bytes  (yyconst char * yybytes, int  _yybytes_len )
 {
 	YY_BUFFER_STATE b;
 	char *buf;
 	yy_size_t n;
-	yy_size_t i;
+	int i;
     
 	/* Get memory for full buffer, including space for trailing EOB's. */
 	n = _yybytes_len + 2;
@@ -1797,7 +1810,7 @@ FILE *yyget_out  (void)
 /** Get the length of the current token.
  * 
  */
-yy_size_t yyget_leng  (void)
+int yyget_leng  (void)
 {
         return yyleng;
 }
@@ -1945,7 +1958,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 65 "calc.l"
+#line 64 "calc.l"
 
 
 

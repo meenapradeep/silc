@@ -1,11 +1,11 @@
 decl
-	int a,b[10];
+	int a,b;
 	bool c,d;
 enddecl
 
 begin
-		b[4] = 67;
-
-		write(b[4]);
+ read(a);
+ b = a+2;
+		write(b);
 
 end
