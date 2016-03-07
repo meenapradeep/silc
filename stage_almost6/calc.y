@@ -42,7 +42,12 @@ int main(int argc, char* argv[])
 %left AND
 %left NOT
 %%
-Pgm 		: DECLARATION BEG StmtList END 	{initFile();CodeGen($3);closeFile();printf("Compiled\n");exit(0);}
+Pgm 		: DECLARATION BEG StmtList END 	{
+				initFile();
+				CodeGen($3);
+				closeFile();
+				printf("Compiled\n");
+				exit(0);}
 				;
 DECLARATION	: DECL declist ENDDECL
 				;
